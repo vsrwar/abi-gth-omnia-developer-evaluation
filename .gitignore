@@ -365,3 +365,6 @@ FodyWeavers.xsd
 
 # .idea folder
 template/backend/.idea/
+
+# env file
+*.env

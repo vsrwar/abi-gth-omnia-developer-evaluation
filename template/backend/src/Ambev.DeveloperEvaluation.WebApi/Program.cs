@@ -31,7 +31,7 @@ public class Program
 
             builder.Services.AddDbContext<DefaultContext>(options =>
                 options.UseNpgsql(
-                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
                 )
             );
@@ -59,6 +59,9 @@ public class Program
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                using var serviceScope = app.Services.CreateScope();
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<DefaultContext>();
+                Task.Run(async () => await dbContext.Database.MigrateAsync()).Wait();
             }
 
             app.UseHttpsRedirection();
