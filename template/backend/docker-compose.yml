@@ -20,6 +20,7 @@ services:
       - ambev.developerevaluation.database
       - ambev.developerevaluation.nosql
       - ambev.developerevaluation.cache
+    restart: unless-stopped
 
   ambev.developerevaluation.database:
     container_name: ambev_developer_evaluation_database
@@ -40,6 +41,7 @@ services:
         MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
       - "27017:27017"
+    restart: unless-stopped
 
   ambev.developerevaluation.cache:
     container_name: ambev_developer_evaluation_cache 
@@ -50,3 +52,4 @@ services:
        MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
        - "6379:6379"
+    restart: unless-stopped
