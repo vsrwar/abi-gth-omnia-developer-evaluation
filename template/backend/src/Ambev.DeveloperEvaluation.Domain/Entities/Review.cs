@@ -14,7 +14,7 @@ public class Review : BaseEntity
     /// Gets the customer's unique identifier of the review.
     /// Must not be null or empty
     /// </summary>
-    public Guid CustomerId { get; set; }
+    public Guid UserId { get; set; }
     
     /// <summary>
     /// Gets the product's unique identifier of the review.
@@ -44,7 +44,7 @@ public class Review : BaseEntity
     /// </returns>
     /// <remarks>
     /// <listheader>The validation includes checking:</listheader>
-    /// <list type="bullet">CustomerId length</list>
+    /// <list type="bullet">UserId length</list>
     /// <list type="bullet">ProductId length</list>
     /// <list type="bullet">Rate value</list>
     /// </remarks>

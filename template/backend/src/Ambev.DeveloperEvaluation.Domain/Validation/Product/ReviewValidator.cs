@@ -7,8 +7,8 @@ public class ReviewValidator : AbstractValidator<Review>
 {
     public ReviewValidator()
     {
-        RuleFor(r => r.CustomerId)
-            .NotEmpty().WithMessage("Customer ID is required.");
+        RuleFor(r => r.UserId)
+            .NotEmpty().WithMessage("User ID is required.");
 
         RuleFor(r => r.ProductId)
             .NotEmpty().WithMessage("Product ID is required.");
