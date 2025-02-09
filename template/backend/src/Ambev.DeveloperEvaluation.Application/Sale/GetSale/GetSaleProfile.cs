@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale;
 public class GetSaleProfile : Profile
 {
     /// <summary>
-    /// Initializes the mappings for GetUser operation
+    /// Initializes the mappings for GetSale operation
     /// </summary>
     public GetSaleProfile()
     {

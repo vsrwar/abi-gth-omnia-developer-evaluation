@@ -5,7 +5,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
 /// <summary>
 /// Validator for <see cref="CreateSaleCommand"/> that defines validation rules for sale creation.
 /// </summary>
-public class CreateSaleValidator : AbstractValidator<CreateSaleCommand>
+public class CreateSaleCommandValidator : AbstractValidator<CreateSaleCommand>
 {
     /// <summary>
     /// Initializes a new instance of the CreateSaleRequestValidator with defined validation rules.
@@ -14,8 +14,9 @@ public class CreateSaleValidator : AbstractValidator<CreateSaleCommand>
     /// Validation rules include:
     /// - UserId: Must be valid format and not empty
     /// - Products: Required, must have at least one
+    /// - Branch: Required, must have at least 3 characters and no more than 100 characters
     /// </remarks>
-    public CreateSaleValidator()
+    public CreateSaleCommandValidator()
     {
         RuleFor(x => x.UserId)
             .NotEmpty().WithMessage("UserId cannot be empty");

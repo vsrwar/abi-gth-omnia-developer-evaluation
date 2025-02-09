@@ -3,12 +3,12 @@
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sale.DeleteSale;
 
 /// <summary>
-/// Validator for CancelSaleRequest
+/// Validator for DeleteSaleRequest
 /// </summary>
 public class DeleteSaleRequestValidator : AbstractValidator<DeleteSaleRequest>
 {
     /// <summary>
-    /// Initializes validation rules for CancelSaleRequest
+    /// Initializes validation rules for DeleteSaleRequest
     /// </summary>
     public DeleteSaleRequestValidator()
     {
