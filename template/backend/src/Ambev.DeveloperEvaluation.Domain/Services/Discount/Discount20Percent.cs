@@ -23,6 +23,7 @@ internal class Discount20Percent : DiscountCalculator
 
     protected override bool CanHandle(IEnumerable<SaleProduct> saleProducts)
     {
-        return saleProducts.Any(sp => sp.Quantity is >= 10 and < 20);
+        return saleProducts.Any(sp => sp.Quantity is >= 10 and < 20)
+            && !saleProducts.Any(sp => sp.Quantity >= 20);
     }
 }

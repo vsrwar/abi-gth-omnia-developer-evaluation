@@ -5,7 +5,7 @@ using MediatR;
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 
 /// <summary>
-/// Command for updating a new product.
+/// Command for updating an existing product.
 /// </summary>
 /// <remarks>
 /// This command is used to capture the required data for updating a product, 

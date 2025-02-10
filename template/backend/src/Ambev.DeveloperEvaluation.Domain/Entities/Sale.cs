@@ -1,7 +1,8 @@
-using Ambev.DeveloperEvaluation.Domain.Common;
+using MongoDB.Bson.Serialization.Attributes;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Services.Discount;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
+using MongoDB.Bson;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
@@ -9,8 +10,10 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 /// Representes a sale on the system.
 /// This entity follows domain-driven design principles and includes business rules validation.
 /// </summary>
-public class Sale : BaseEntity
+public class Sale
 {
+    [BsonId]
+    public ObjectId _id { get; set; }
     /// <summary>
     /// Gets the sale number.
     /// </summary>
@@ -51,42 +54,41 @@ public class Sale : BaseEntity
     /// <para>Purchases below 4 items cannot have a discount</para>
     /// </remarks>
     public SaleDiscount? Discount { get; private set; }
-    
+
     /// <summary>
     /// Sale status on the system.
     /// </summary>
-    public SaleStatus Status { get; private set; }
-
-    /// <summary>
-    /// Instantiates a new Sale on the system.
-    /// </summary>
-    /// <param name="userId">Customer identifier from who is making the sale.</param>
-    /// <param name="branch">Branch where the sale was made</param>
-    /// <param name="products">List of products</param>
-    /// <param name="number">Sale number</param>
-    public Sale(Guid userId, string branch, IEnumerable<SaleProduct> products, int number)
-    {
-        UserId = userId;
-        Branch = branch;
-        Products = products;
-        Number = number;
-        Status = SaleStatus.Created;
-        CalculateTotalAmount();
-        CalculateDiscount();
-    }
-
-    public void CalculateDiscount()
+    public SaleStatus Status { get; private set; } = SaleStatus.Created;
+    
+    public Sale CalculateDiscount()
     {
         Discount = DiscountHandler.Calculate(Products);
+        return this;
     }
 
     /// <summary>
     /// Calculates the total amount, discounts not applied.
     /// </summary>
     /// <remarks>Sum of Product.Quantity * Product.Price</remarks>
-    public void CalculateTotalAmount()
+    public Sale CalculateTotalAmount()
     {
         TotalAmount = Products.Sum(x => x.Price * x.Quantity);
+        return this;
+    }
+
+    /// <summary>
+    /// Updates current product prices
+    /// </summary>
+    /// <param name="products">Products with updated prices</param>
+    /// <returns>This instance of Sale</returns>
+    public Sale UpdateProductsPrices(IEnumerable<Product> products)
+    {
+        foreach (var product in Products)
+        {
+            product.Price = products.FirstOrDefault(p => p.Id == product.ProductId)?.Price ?? product.Price;
+        }
+
+        return this;
     }
 
     /// <summary>
@@ -95,5 +97,15 @@ public class Sale : BaseEntity
     public void Cancel()
     {
         Status = SaleStatus.Cancelled;
+    }
+
+    /// <summary>
+    /// Calculates Discounts and Total amount with updated prices from parameter
+    /// </summary>
+    public void Calculate(IEnumerable<Product> products)
+    {
+        UpdateProductsPrices(products);
+        CalculateDiscount();
+        CalculateTotalAmount();
     }
 }

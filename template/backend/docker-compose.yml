@@ -10,6 +10,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - POSTGRES_CONNECTION_STRING=Server=ambev.developerevaluation.database;Database=${DB_BASE};User Id=${DB_USER};Password=${DB_PASSWORD};TrustServerCertificate=True
+      - MONGO_CONNECTION_STRING=mongodb://${DB_USER}:${DB_PASSWORD}@ambev.developerevaluation.nosql:27017/
     ports:
       - "8080:8080"
       - "8081:8181"

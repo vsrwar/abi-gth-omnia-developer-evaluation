@@ -31,6 +31,14 @@ public interface IProductRepository
     Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves a IEnumerable of products by their unique identifier
+    /// </summary>
+    /// <param name="productIds">List with all unique identifiers of the products</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The product list if found, empty collection otherwise</returns>
+    Task<IEnumerable<Product>> GetByIdsAsync(List<Guid> productIds, CancellationToken cancellationToken = default);
+    
+    /// <summary>
     /// Updates a product
     /// </summary>
     /// <param name="product">The product to update</param>
