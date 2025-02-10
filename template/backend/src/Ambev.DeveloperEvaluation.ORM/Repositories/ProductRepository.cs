@@ -56,6 +56,20 @@ public class ProductRepository : IProductRepository
     }
 
     /// <summary>
+    /// Retrieves a IEnumerable of products by their unique identifier
+    /// </summary>
+    /// <param name="productIds">List with all unique identifiers of the products</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The product list if found, empty collection otherwise</returns>
+    public async Task<IEnumerable<Product>> GetByIdsAsync(List<Guid> productIds, CancellationToken cancellationToken = default)
+    {
+        return await _context.Products
+            .AsNoTracking()
+            .Where(p=> productIds.Contains(p.Id))
+            .ToListAsync(cancellationToken);
+    }
+
+    /// <summary>
     /// Updates a product
     /// </summary>
     /// <param name="product">The product to update</param>
@@ -65,7 +79,7 @@ public class ProductRepository : IProductRepository
     {
         var savedProduct = await GetByIdAsync(product.Id, cancellationToken);
         if (savedProduct == null)
-            return product;
+            throw new KeyNotFoundException($"Product with ID {product.Id} not found");
         
         _context.Entry(product).State = EntityState.Modified;
         _context.Products.Update(product);
@@ -83,7 +97,7 @@ public class ProductRepository : IProductRepository
     {
         var product = await GetByIdAsync(id, cancellationToken);
         if (product == null)
-            return false;
+            throw new KeyNotFoundException($"Product with ID {id.ToString()} not found");
 
         _context.Products.Remove(product);
         await _context.SaveChangesAsync(cancellationToken);

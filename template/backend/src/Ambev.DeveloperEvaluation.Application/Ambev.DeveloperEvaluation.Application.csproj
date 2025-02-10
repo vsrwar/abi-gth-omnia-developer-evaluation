@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Products\ListProduct\" />
-    <Folder Include="Sale\ListSale\" />
+    <Folder Include="Sales\ListSale\" />
   </ItemGroup>
 
 </Project>
