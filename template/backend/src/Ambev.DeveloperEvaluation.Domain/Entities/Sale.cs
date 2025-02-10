@@ -1,8 +1,8 @@
-using MongoDB.Bson.Serialization.Attributes;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Services.Discount;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 

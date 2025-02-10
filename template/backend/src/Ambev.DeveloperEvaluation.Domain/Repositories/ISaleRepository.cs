@@ -20,7 +20,7 @@ public interface ISaleRepository
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The sale if found, null otherwise</returns>
-    Task<IEnumerable<Sale>> GetAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<Sale>> ListAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a sale by their unique identifier
