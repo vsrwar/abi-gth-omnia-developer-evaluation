@@ -1,7 +1,6 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.ORM.Mongo;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -12,16 +11,19 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 public class SaleRepository : ISaleRepository
 {
     private readonly MongoContext _context;
-    
+    private readonly IRepositoryBase<MongoContext, Sale> _repositoryBase;
+
     /// <summary>
     /// Initializes a new instance of SaleRepository
     /// </summary>
-    /// <param name="dbHelper">The database helper</param>
-    public SaleRepository(MongoHelper dbHelper)
+    /// <param name="context">The database context</param>
+    /// <param name="repositoryBase">The repository base</param>
+    public SaleRepository(IRepositoryBase<MongoContext, Sale> repositoryBase, MongoContext context)
     {
-        _context = dbHelper.Context;
+        _repositoryBase = repositoryBase;
+        _context = context;
     }
-    
+
     /// <summary>
     /// Creates a new sale in the repository
     /// </summary>
@@ -29,21 +31,15 @@ public class SaleRepository : ISaleRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The created sale</returns>
     public async Task<Sale> CreateAsync(Sale sale, CancellationToken cancellationToken = default)
-    {
-        await _context.Sales.AddAsync(sale, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
-        return sale;
-    }
+        => await _repositoryBase.CreateAsync(sale, cancellationToken);
 
     /// <summary>
     /// Retrieves sales paged
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The sale if found, null otherwise</returns>
-    public Task<IEnumerable<Sale>> GetAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<IEnumerable<Sale>> ListAsync(CancellationToken cancellationToken = default)
+        => _repositoryBase.ListAsync(cancellationToken);
 
     /// <summary>
     /// Retrieves a sale by their unique identifier
@@ -52,10 +48,7 @@ public class SaleRepository : ISaleRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The sale if found, null otherwise</returns>
     public async Task<Sale?> GetByIdAsync(string id, CancellationToken cancellationToken = default)
-    {
-        return await _context.Sales
-            .FirstOrDefaultAsync(s => s._id == new ObjectId(id), cancellationToken: cancellationToken);
-    }
+        => await _repositoryBase.GetByIdAsync(new ObjectId(id), cancellationToken);
 
     /// <summary>
     /// Updates a sale
@@ -64,18 +57,7 @@ public class SaleRepository : ISaleRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The sale if found, null otherwise</returns>
     public async Task<Sale> UpdateAsync(Sale sale, CancellationToken cancellationToken = default)
-    {
-        var savedSale = await _context.Sales
-            .AsNoTracking()
-            .FirstOrDefaultAsync(s => s._id == sale._id, cancellationToken: cancellationToken);
-        if (savedSale == null)
-            throw new KeyNotFoundException($"Sale with ID {sale._id} not found");
-        
-        _context.Entry(sale).State = EntityState.Modified;
-        _context.Sales.Update(sale);
-        await _context.SaveChangesAsync(cancellationToken);
-        return sale;
-    }
+        => await _repositoryBase.UpdateAsync(sale, cancellationToken);
 
     /// <summary>
     /// Deletes a sale from the repository
@@ -84,13 +66,5 @@ public class SaleRepository : ISaleRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the sale was deleted, false if not found</returns>
     public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default)
-    {
-        var sale = await GetByIdAsync(id, cancellationToken);
-        if (sale == null)
-            throw new KeyNotFoundException($"Sale with ID {id} not found");
-
-        _context.Sales.Remove(sale);
-        await _context.SaveChangesAsync(cancellationToken);
-        return true;
-    }
+        => await _repositoryBase.DeleteAsync(new ObjectId(id), cancellationToken);
 }

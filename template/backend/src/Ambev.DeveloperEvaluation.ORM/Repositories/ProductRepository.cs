@@ -10,14 +10,17 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 public class ProductRepository : IProductRepository
 {
     private readonly DefaultContext _context;
+    private readonly IRepositoryBase<DefaultContext, Product> _repositoryBase;
 
     /// <summary>
     /// Initializes a new instance of ProductRepository
     /// </summary>
     /// <param name="context">The database context</param>
-    public ProductRepository(DefaultContext context)
+    /// <param name="repositoryBase">The repository base</param>
+    public ProductRepository(DefaultContext context, IRepositoryBase<DefaultContext, Product> repositoryBase)
     {
         _context = context;
+        _repositoryBase = repositoryBase;
     }
 
     /// <summary>
@@ -27,21 +30,15 @@ public class ProductRepository : IProductRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The created product</returns>
     public async Task<Product> CreateAsync(Product product, CancellationToken cancellationToken = default)
-    {
-        await _context.Products.AddAsync(product, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
-        return product;
-    }
+        => await _repositoryBase.CreateAsync(product, cancellationToken);
 
     /// <summary>
     /// Retrieves products paged
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The product if found, null otherwise</returns>
-    public Task<IEnumerable<Product>> GetAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<IEnumerable<Product>> ListAsync(CancellationToken cancellationToken = default)
+        => _repositoryBase.ListAsync(cancellationToken);
 
     /// <summary>
     /// Retrieves a product by their unique identifier
@@ -49,11 +46,7 @@ public class ProductRepository : IProductRepository
     /// <param name="id">The unique identifier of the product</param>
     /// <param name="cancellationToken">Cancellation token</param>
     public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return await _context.Products
-            .AsNoTracking()
-            .FirstOrDefaultAsync(p=> p.Id == id, cancellationToken);
-    }
+        => await _repositoryBase.GetByIdAsync(id, cancellationToken);
 
     /// <summary>
     /// Retrieves a IEnumerable of products by their unique identifier
@@ -76,16 +69,7 @@ public class ProductRepository : IProductRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The product if found, null otherwise</returns>
     public async Task<Product> UpdateAsync(Product product, CancellationToken cancellationToken = default)
-    {
-        var savedProduct = await GetByIdAsync(product.Id, cancellationToken);
-        if (savedProduct == null)
-            throw new KeyNotFoundException($"Product with ID {product.Id} not found");
-        
-        _context.Entry(product).State = EntityState.Modified;
-        _context.Products.Update(product);
-        await _context.SaveChangesAsync(cancellationToken);
-        return product;
-    }
+        => await _repositoryBase.UpdateAsync(product, cancellationToken);
 
     /// <summary>
     /// Deletes a product from the repository
@@ -94,13 +78,5 @@ public class ProductRepository : IProductRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the product was deleted, false if not found</returns>
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var product = await GetByIdAsync(id, cancellationToken);
-        if (product == null)
-            throw new KeyNotFoundException($"Product with ID {id.ToString()} not found");
-
-        _context.Products.Remove(product);
-        await _context.SaveChangesAsync(cancellationToken);
-        return true;
-    }
+        => await _repositoryBase.DeleteAsync(id, cancellationToken);
 }

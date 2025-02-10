@@ -20,7 +20,7 @@ public interface IProductRepository
     /// </summary>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The product if found, null otherwise</returns>
-    Task<IEnumerable<Product>> GetAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<Product>> ListAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a product by their unique identifier
