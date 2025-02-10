@@ -2,7 +2,6 @@
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale;
 
-
 /// <summary>
 /// Command for retrieving a sale by their ID
 /// </summary>

@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.ValueObjects;
+﻿using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using FluentValidation;
 using MediatR;
 
@@ -34,4 +35,19 @@ public class CreateSaleCommand : IRequest<CreateSaleResult>
     /// Gets or sets branch where the sale was made
     /// </summary>
     public string Branch { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Validates the creation command through <see cref="CreateSaleCommandValidator"/>
+    /// </summary>
+    /// <returns><see cref="ValidationResultDetail"/></returns>
+    public ValidationResultDetail Validate()
+    {
+        var validator = new CreateSaleCommandValidator();
+        var result = validator.Validate(this);
+        return new ValidationResultDetail
+        {
+            IsValid = result.IsValid,
+            Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
+        };
+    }
 }
