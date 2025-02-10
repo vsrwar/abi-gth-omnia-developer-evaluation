@@ -25,10 +25,10 @@ public class CreateProductRequest
     public string Description { get; set; } = string.Empty;
     
     /// <summary>
-    /// Gets or sets the product's category unique identifier.
-    /// Category id of product.
+    /// Gets or sets the product's category.
+    /// Category of product.
     /// </summary>
-    public Guid CategoryId { get; set; }
+    public string Category { get; set; } = string.Empty;
     
     /// <summary>
     /// Gets or sets the product's image.

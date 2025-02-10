@@ -28,7 +28,7 @@ public class UpdateProductResponse
     /// <summary>
     /// The product's category unique identifier.
     /// </summary>
-    public Guid CategoryId { get; set; }
+    public string Category { get; set; } = string.Empty;
     
     /// <summary>
     /// The product's image.

@@ -36,9 +36,9 @@ public class CreateProductCommand : IRequest<CreateProductResult>
     public string Description { get; set; } = string.Empty;
     
     /// <summary>
-    /// Gets or sets the product's category unique identifier.
+    /// Gets or sets the product's category.
     /// </summary>
-    public Guid CategoryId { get; set; }
+    public string Category { get; set; } = string.Empty;
     
     /// <summary>
     /// Gets or sets the product's image.
