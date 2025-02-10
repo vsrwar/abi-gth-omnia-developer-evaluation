@@ -1,10 +1,12 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -87,6 +89,34 @@ public class ProductsController : BaseController
             Success = true,
             Message = "Product retrieved successfully",
             Data = _mapper.Map<GetProductResponse>(response)
+        });
+    }
+    
+    /// <summary>
+    /// Updates an existing product
+    /// </summary>
+    /// <param name="request">The product update request</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The updated product details</returns>
+    [HttpPut]
+    [ProducesResponseType(typeof(ApiResponseWithData<UpdateProductResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
+    {
+        var validator = new UpdateProductRequestValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        var command = _mapper.Map<UpdateProductCommand>(request);
+        var response = await _mediator.Send(command, cancellationToken);
+
+        return Ok(new ApiResponseWithData<UpdateProductResponse>
+        {
+            Success = true,
+            Message = "Product updated successfully",
+            Data = _mapper.Map<UpdateProductResponse>(response)
         });
     }
 

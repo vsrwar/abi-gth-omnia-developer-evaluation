@@ -46,12 +46,12 @@ public class Product : BaseEntity
     /// A image location (uri).
     /// </summary>
     public string Image { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Gets the product's rating.
     /// Returns current rate and count.
     /// </summary>
-    public Rating Rating { get; set; }
+    public Rating? Rating { get; set; }
     
     /// <summary>
     /// Gets the product's reviews.

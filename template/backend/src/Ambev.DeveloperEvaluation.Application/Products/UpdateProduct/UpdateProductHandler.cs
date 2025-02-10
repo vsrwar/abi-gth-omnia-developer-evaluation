@@ -4,36 +4,36 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
+namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 
 /// <summary>
-/// Handler for processing CreateProductCommand requests
+/// Handler for processing UpdateProductCommand requests
 /// </summary>
-public class CreateProductHandler : IRequestHandler<CreateProductCommand, CreateProductResult>
+public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, UpdateProductResult>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
     /// <summary>
-    /// Initializes a new instance of CreateProductHandler
+    /// Initializes a new instance of UpdateProductHandler
     /// </summary>
     /// <param name="productRepository">The product repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    public CreateProductHandler(IProductRepository productRepository, IMapper mapper)
+    public UpdateProductHandler(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
         _mapper = mapper;
     }
 
     /// <summary>
-    /// Handles the CreateProductCommand request
+    /// Handles the UpdateProductCommand request
     /// </summary>
-    /// <param name="request">The CreateProduct command</param>
+    /// <param name="request">The UpdateProduct command</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The created product details</returns>
-    public async Task<CreateProductResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<UpdateProductResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var validator = new CreateProductCommandValidator();
+        var validator = new UpdateProductCommandValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
@@ -41,8 +41,8 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
 
         var product = _mapper.Map<Product>(request);
 
-        var createdProduct = await _productRepository.CreateAsync(product, cancellationToken);
-        var result = _mapper.Map<CreateProductResult>(createdProduct);
+        var updateProduct = await _productRepository.UpdateAsync(product, cancellationToken);
+        var result = _mapper.Map<UpdateProductResult>(updateProduct);
         return result;
     }
 }
