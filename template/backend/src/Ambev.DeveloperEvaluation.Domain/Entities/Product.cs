@@ -33,13 +33,7 @@ public class Product : BaseEntity
     /// Gets the product's category.
     /// Category of product.
     /// </summary>
-    public Category Category { get; set; }
-    
-    /// <summary>
-    /// Gets the product's category unique identifier.
-    /// Category id of product.
-    /// </summary>
-    public Guid CategoryId { get; set; }
+    public string Category { get; set; }
     
     /// <summary>
     /// Gets the product's image.

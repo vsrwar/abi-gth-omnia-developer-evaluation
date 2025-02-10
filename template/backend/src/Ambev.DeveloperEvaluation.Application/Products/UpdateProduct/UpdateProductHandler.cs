@@ -39,10 +39,14 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var product = _mapper.Map<Product>(request);
+        var productOld = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
+        if (productOld == null)
+            throw new KeyNotFoundException($"Product with ID {request.Id} not found");
+        
+        var updateProduct = _mapper.Map<Product>(request);
 
-        var updateProduct = await _productRepository.UpdateAsync(product, cancellationToken);
-        var result = _mapper.Map<UpdateProductResult>(updateProduct);
+        var x = await _productRepository.UpdateAsync(updateProduct, cancellationToken);
+        var result = _mapper.Map<UpdateProductResult>(x);
         return result;
     }
 }

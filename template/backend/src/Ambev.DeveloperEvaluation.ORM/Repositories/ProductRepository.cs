@@ -50,7 +50,9 @@ public class ProductRepository : IProductRepository
     /// <param name="cancellationToken">Cancellation token</param>
     public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Products.FirstOrDefaultAsync(p=> p.Id == id, cancellationToken);
+        return await _context.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p=> p.Id == id, cancellationToken);
     }
 
     /// <summary>

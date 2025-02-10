@@ -7,6 +7,11 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 public class UpdateProductRequest
 {
     /// <summary>
+    /// The product unique identifier.
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
     /// Gets or sets the product's title.
     /// Must not be null or empty
     /// </summary>
@@ -25,10 +30,10 @@ public class UpdateProductRequest
     public string Description { get; set; } = string.Empty;
     
     /// <summary>
-    /// Gets or sets the product's category unique identifier.
+    /// Gets or sets the product's category.
     /// Category id of product.
     /// </summary>
-    public Guid CategoryId { get; set; }
+    public string Category { get; set; } = string.Empty;
     
     /// <summary>
     /// Gets or sets the product's image.

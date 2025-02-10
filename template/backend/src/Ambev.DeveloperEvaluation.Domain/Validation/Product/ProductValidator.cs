@@ -26,8 +26,9 @@ public class ProductValidator : AbstractValidator<Entities.Product>
             .Must(BeValidUrl)
             .WithMessage("The provided url address is not valid.")
             .MaximumLength(200).WithMessage("Image cannot be longer than 200 characters.");
-        
-        RuleFor(user => user.Category).SetValidator(new CategoryValidator());
+
+        RuleFor(user => user.Category)
+            .NotEmpty().WithMessage("The category cannot be empty.");
     }
 
     private static bool BeValidUrl(string url)

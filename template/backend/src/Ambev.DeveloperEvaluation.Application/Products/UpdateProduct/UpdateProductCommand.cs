@@ -21,6 +21,11 @@ namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 public class UpdateProductCommand : IRequest<UpdateProductResult>
 {
     /// <summary>
+    /// The product unique identifier.
+    /// </summary>
+    public Guid Id { get; set; }
+
+    /// <summary>
     /// Gets or sets the product's title.
     /// </summary>
     public string Title { get; set; } = string.Empty;
@@ -36,9 +41,9 @@ public class UpdateProductCommand : IRequest<UpdateProductResult>
     public string Description { get; set; } = string.Empty;
     
     /// <summary>
-    /// Gets or sets the product's category unique identifier.
+    /// Gets or sets the product's category.
     /// </summary>
-    public Guid CategoryId { get; set; }
+    public string Category { get; set; } = string.Empty;
     
     /// <summary>
     /// Gets or sets the product's image.

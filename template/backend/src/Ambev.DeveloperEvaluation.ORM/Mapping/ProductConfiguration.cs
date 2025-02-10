@@ -14,10 +14,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.Id).HasColumnType("uuid").HasDefaultValueSql("gen_random_uuid()");
 
         builder.Property(p => p.Title).IsRequired().HasMaxLength(100);
-        builder.Property(p => p.Price).IsRequired().HasPrecision(2);
+        builder.Property(p => p.Price).IsRequired().HasPrecision(7,2);
         builder.Property(p => p.Description).IsRequired().HasMaxLength(500);
         builder.Property(p => p.Image).IsRequired().HasMaxLength(200);
-        builder.Property(p => p.CategoryId).IsRequired();
+        builder.Property(p => p.Category).IsRequired();
         builder.OwnsOne(p => p.Rating, navigationBuilder =>
         {
             navigationBuilder.Property(r => r.Rate);
