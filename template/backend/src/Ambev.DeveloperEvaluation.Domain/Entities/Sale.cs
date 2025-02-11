@@ -108,4 +108,9 @@ public class Sale
         CalculateDiscount();
         CalculateTotalAmount();
     }
+
+    public void UpdateNumber(int number)
+    {
+        Number = number;
+    }
 }

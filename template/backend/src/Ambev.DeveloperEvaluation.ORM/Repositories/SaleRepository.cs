@@ -1,7 +1,8 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.ORM.Mongo;
-using Ambev.DeveloperEvaluation.WebApi.Common;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -32,7 +33,11 @@ public class SaleRepository : ISaleRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The created sale</returns>
     public async Task<Sale> CreateAsync(Sale sale, CancellationToken cancellationToken = default)
-        => await _repositoryBase.CreateAsync(sale, cancellationToken);
+    {
+        var number = await _context.Sales.CountAsync(cancellationToken: cancellationToken);
+        sale.UpdateNumber(++number);;
+        return await _repositoryBase.CreateAsync(sale, cancellationToken);
+    } 
 
     /// <summary>
     /// Retrieves sales paged
