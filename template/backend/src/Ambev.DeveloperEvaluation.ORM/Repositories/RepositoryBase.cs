@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.WebApi.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -32,11 +33,16 @@ public class RepositoryBase<TContext, T> : IRepositoryBase<TContext, T>
     /// <summary>
     /// Retrieves entitys paged
     /// </summary>
+    /// <param name="paging">Pagination configuration</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The entity if found, null otherwise</returns>
-    public async Task<IEnumerable<T>> ListAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<T>> ListAsync(Paging paging, CancellationToken cancellationToken = default)
     {
-        return await _entities.AsNoTracking().ToListAsync(cancellationToken);
+        return await _entities
+            .AsNoTracking()
+            .Skip(paging._size * (paging._page - 1))
+            .Take(paging._size)
+            .ToListAsync(cancellationToken);
     }
 
     /// <summary>
