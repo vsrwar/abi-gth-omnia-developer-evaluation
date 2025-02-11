@@ -42,6 +42,9 @@ public class GetSaleHandler : IRequestHandler<GetSaleCommand, GetSaleResult>
         if (sale == null)
             throw new KeyNotFoundException($"Sale with ID {request.Id} not found");
 
-        return _mapper.Map<GetSaleResult>(sale);
+        var result = _mapper.Map<GetSaleResult>(sale);
+        result.CalculateFinalPrice();
+        
+        return result;
     }
 }
