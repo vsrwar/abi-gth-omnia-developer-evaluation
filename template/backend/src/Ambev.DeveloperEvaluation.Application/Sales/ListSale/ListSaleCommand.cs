@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Common;
+﻿using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale;

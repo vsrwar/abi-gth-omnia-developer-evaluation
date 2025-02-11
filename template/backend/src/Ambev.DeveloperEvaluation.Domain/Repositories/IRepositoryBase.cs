@@ -1,4 +1,4 @@
-using Ambev.DeveloperEvaluation.WebApi.Common;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories;

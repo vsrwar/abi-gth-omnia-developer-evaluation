@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProduct;
