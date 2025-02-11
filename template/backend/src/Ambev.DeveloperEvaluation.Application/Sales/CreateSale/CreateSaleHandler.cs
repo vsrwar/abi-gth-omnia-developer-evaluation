@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events.Sale;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -14,6 +15,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     private readonly ISaleRepository _saleRepository;
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
+    private readonly ISaleEventDispatcher _saleEventDispatcher;
 
     /// <summary>
     /// Initializes a new instance of CreateProductHandler
@@ -21,12 +23,15 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
     /// <param name="saleRepository">The sale repository</param>
     /// <param name="productRepository">The product repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
+    /// <param name="saleEventDispatcher">Event dispatcher for sale events</param>
     public CreateSaleHandler(ISaleRepository saleRepository,
         IProductRepository productRepository,
-        IMapper mapper)
+        IMapper mapper,
+        ISaleEventDispatcher saleEventDispatcher)
     {
         _saleRepository = saleRepository;
         _mapper = mapper;
+        _saleEventDispatcher = saleEventDispatcher;
         _productRepository = productRepository;
     }
     
@@ -50,6 +55,9 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         sale.Calculate(products);
 
         var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
+
+        await _saleEventDispatcher.PublishAsync(new SaleCreatedEvent(sale._id, sale.UserId, sale.TotalAmount));
+        
         return _mapper.Map<CreateSaleResult>(createdSale);
     }
 }
