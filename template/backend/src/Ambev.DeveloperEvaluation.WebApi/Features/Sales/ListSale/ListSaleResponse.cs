@@ -1,12 +1,12 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
 
 /// <summary>
-/// Response model for GetSale operation
+/// API response model for ListSale operation
 /// </summary>
-public class GetSaleResult
+public class ListSaleResponse
 {
     /// <summary>
     /// The sale's number.
@@ -27,7 +27,7 @@ public class GetSaleResult
     /// The sale's date of creation.
     /// </summary>
     public DateTime Date { get; set; }
-
+    
     /// <summary>
     /// A list of products, containing ids and quantities
     /// </summary>
@@ -52,14 +52,4 @@ public class GetSaleResult
     /// Sale status, can be created or canceled
     /// </summary>
     public SaleStatus Status { get; set; }
-
-    /// <summary>
-    /// Calculates the final price, products * quantities - discount (if available).
-    /// </summary>
-    public void CalculateFinalPrice()
-    {
-        TotalSaleAmount = Discount is null
-            ? Products.Sum(p => p.TotalAmount)
-            : Products.Sum(p => p.TotalAmount) - Discount.Amount;
-    }
 }

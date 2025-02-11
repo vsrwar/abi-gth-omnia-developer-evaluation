@@ -1,6 +1,7 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.ORM.Mongo;
+using Ambev.DeveloperEvaluation.WebApi.Common;
 using MongoDB.Bson;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -36,10 +37,11 @@ public class SaleRepository : ISaleRepository
     /// <summary>
     /// Retrieves sales paged
     /// </summary>
+    /// <param name="paging">Pagination configuration</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The sale if found, null otherwise</returns>
-    public Task<IEnumerable<Sale>> ListAsync(CancellationToken cancellationToken = default)
-        => _repositoryBase.ListAsync(cancellationToken);
+    public Task<IEnumerable<Sale>> ListAsync(Paging paging, CancellationToken cancellationToken = default)
+        => _repositoryBase.ListAsync(paging, cancellationToken);
 
     /// <summary>
     /// Retrieves a sale by their unique identifier

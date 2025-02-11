@@ -1,10 +1,13 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
+using Ambev.DeveloperEvaluation.Application.Sales.ListSale;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.DeleteSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -88,6 +91,32 @@ public class SaleController : BaseController
             Message = "Sale retrieved successfully",
             Data = _mapper.Map<GetSaleResponse>(response)
         });
+    }
+    
+    /// <summary>
+    /// Retrieves a sale list
+    /// </summary>
+    /// <param name="paging">Pagination configuration</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A list of sales</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(PaginatedList<GetSaleResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ListSale([FromQuery] Paging? paging, CancellationToken cancellationToken)
+    {
+        var request = new ListSaleRequest { Paging = paging ?? new Paging() };
+        var validator = new ListSaleRequestValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        var command = _mapper.Map<ListSaleCommand>(request);
+        var response = await _mediator.Send(command, cancellationToken);
+
+        return OkPaginated(new PaginatedList<GetSaleResult>
+            (response.Sales.ToList(), response.Sales.Count(), request.Paging._page, request.Paging._size)
+        );
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.WebApi.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -35,10 +36,11 @@ public class ProductRepository : IProductRepository
     /// <summary>
     /// Retrieves products paged
     /// </summary>
+    /// <param name="paging">Pagination configuration</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The product if found, null otherwise</returns>
-    public Task<IEnumerable<Product>> ListAsync(CancellationToken cancellationToken = default)
-        => _repositoryBase.ListAsync(cancellationToken);
+    public Task<IEnumerable<Product>> ListAsync(Paging paging, CancellationToken cancellationToken = default)
+        => _repositoryBase.ListAsync(paging, cancellationToken);
 
     /// <summary>
     /// Retrieves a product by their unique identifier

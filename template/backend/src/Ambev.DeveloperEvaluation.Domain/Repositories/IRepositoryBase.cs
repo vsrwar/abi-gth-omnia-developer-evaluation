@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories;
@@ -17,9 +18,10 @@ public interface IRepositoryBase<TContext, T>
     /// <summary>
     /// Retrieves entitys paged
     /// </summary>
+    /// <param name="paging">Pagination configuration</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The entity if found, null otherwise</returns>
-    Task<IEnumerable<T>> ListAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<T>> ListAsync(Paging paging, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a entity by their unique identifier

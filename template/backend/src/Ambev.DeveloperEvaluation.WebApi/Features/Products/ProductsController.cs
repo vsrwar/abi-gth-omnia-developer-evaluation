@@ -1,11 +1,14 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+using Ambev.DeveloperEvaluation.Application.Products.ListProduct;
 using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using AutoMapper;
 using MediatR;
@@ -90,6 +93,32 @@ public class ProductsController : BaseController
             Message = "Product retrieved successfully",
             Data = _mapper.Map<GetProductResponse>(response)
         });
+    }
+
+    /// <summary>
+    /// Retrieves a product list
+    /// </summary>
+    /// <param name="paging">Pagination configuration</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A list of products</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(PaginatedList<GetProductResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ListProduct([FromQuery] Paging? paging, CancellationToken cancellationToken)
+    {
+        var request = new ListProductRequest { Paging = paging ?? new Paging() };
+        var validator = new ListProductRequestValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        var command = _mapper.Map<ListProductCommand>(request);
+        var response = await _mediator.Send(command, cancellationToken);
+
+        return OkPaginated(new PaginatedList<GetProductResult>
+            (response.Products.ToList(), response.Products.Count(), request.Paging._page, request.Paging._size)
+        );
     }
     
     /// <summary>
