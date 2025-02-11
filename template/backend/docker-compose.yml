@@ -21,6 +21,7 @@ services:
       - ambev.developerevaluation.database
       - ambev.developerevaluation.nosql
       - ambev.developerevaluation.cache
+    restart: unless-stopped
 
   ambev.developerevaluation.database:
     container_name: ambev_developer_evaluation_database
