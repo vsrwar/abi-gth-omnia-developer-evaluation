@@ -11,6 +11,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleResult>
 {
     private readonly ISaleRepository _saleRepository;
+    private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
 
     /// <summary>
@@ -18,10 +19,12 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
     /// </summary>
     /// <param name="saleRepository">The sale repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    public UpdateSaleHandler(ISaleRepository saleRepository, IMapper mapper)
+    /// <param name="productRepository">the product repository</param>
+    public UpdateSaleHandler(ISaleRepository saleRepository, IMapper mapper, IProductRepository productRepository)
     {
         _saleRepository = saleRepository;
         _mapper = mapper;
+        _productRepository = productRepository;
     }
 
     /// <summary>
@@ -41,11 +44,15 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         var saleOld = await _saleRepository.GetByIdAsync(request.Id, cancellationToken);
         if (saleOld == null)
             throw new KeyNotFoundException($"Sales with ID {request.Id} not found");
-        
-        var updateSale = _mapper.Map<Domain.Entities.Sale>(request);
 
-        var x = await _saleRepository.UpdateAsync(updateSale, cancellationToken);
-        var result = _mapper.Map<UpdateSaleResult>(x);
+        var productIds = request.Products.Select(p => p.ProductId).ToList();
+        var products = await _productRepository.GetByIdsAsync(productIds, cancellationToken);
+        
+        saleOld.Update(request.Products, request.Branch);
+        saleOld.Calculate(products);
+
+        await _saleRepository.UpdateAsync(saleOld, cancellationToken);
+        var result = _mapper.Map<UpdateSaleResult>(saleOld);
         return result;
     }
 }

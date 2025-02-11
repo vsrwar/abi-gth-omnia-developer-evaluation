@@ -87,12 +87,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<GetProductCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponseWithData<GetProductResponse>
-        {
-            Success = true,
-            Message = "Product retrieved successfully",
-            Data = _mapper.Map<GetProductResponse>(response)
-        });
+        return Ok(_mapper.Map<GetProductResponse>(response));
     }
 
     /// <summary>
@@ -141,12 +136,7 @@ public class ProductsController : BaseController
         var command = _mapper.Map<UpdateProductCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponseWithData<UpdateProductResponse>
-        {
-            Success = true,
-            Message = "Product updated successfully",
-            Data = _mapper.Map<UpdateProductResponse>(response)
-        });
+        return Ok(_mapper.Map<UpdateProductResponse>(response));
     }
 
     /// <summary>

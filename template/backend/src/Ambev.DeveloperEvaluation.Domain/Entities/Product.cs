@@ -93,4 +93,13 @@ public class Product : BaseEntity
             throw new ArgumentException("Price cannot be negative");
         Price = newPrice;
     }
+
+    public void Update(string requestTitle, string requestDescription, decimal requestPrice, string requestCategory, string requestImage)
+    {
+        Title = requestTitle;
+        Description = requestDescription;
+        Price = requestPrice;
+        Category = requestCategory;
+        Image = requestImage;
+    }
 }

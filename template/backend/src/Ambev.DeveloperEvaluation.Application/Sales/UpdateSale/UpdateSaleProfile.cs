@@ -14,6 +14,8 @@ public class UpdateSaleProfile : Profile
     public UpdateSaleProfile()
     {
         CreateMap<UpdateSaleCommand, Sale>();
-        CreateMap<Sale, UpdateSaleResult>();
+        CreateMap<Sale, UpdateSaleResult>()
+            .ForMember(dst => dst.Id, opt => opt.MapFrom(
+            src => src._id.ToString()));;
     }
 }

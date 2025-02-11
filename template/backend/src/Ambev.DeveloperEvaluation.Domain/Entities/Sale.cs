@@ -113,4 +113,10 @@ public class Sale
     {
         Number = number;
     }
+
+    public void Update(IEnumerable<SaleProduct> requestProducts, string requestBranch)
+    {
+        Products = requestProducts;
+        Branch = requestBranch;
+    }
 }
