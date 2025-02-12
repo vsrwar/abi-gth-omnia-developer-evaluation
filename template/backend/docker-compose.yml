@@ -42,6 +42,7 @@ services:
         MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
     ports:
       - "27017:27017"
+    restart: unless-stopped
 
 #  ambev.developerevaluation.cache:
 #    container_name: ambev_developer_evaluation_cache 
