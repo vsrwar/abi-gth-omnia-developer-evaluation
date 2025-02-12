@@ -1,86 +1,71 @@
-# Developer Evaluation Project
+# Ambev Developer Evaluation Web API
 
-`READ CAREFULLY`
+This repository contains the source code for the Ambev Developer Evaluation Web API, built with C# and ASP.NET Core. The API can be run in three different ways: locally, using Docker Compose, or directly from a Docker container.
 
-## Instructions
-**The test below will have up to 7 calendar days to be delivered from the date of receipt of this manual.**
+## Prerequisites
 
-- The code must be versioned in a public Github repository and a link must be sent for evaluation once completed
-- Upload this template to your repository and start working from it
-- Read the instructions carefully and make sure all requirements are being addressed
-- The repository must provide instructions on how to configure, execute and test the project
-- Documentation and overall organization will also be taken into consideration
+Before running the application, ensure you have the following installed:
 
-## Use Case
-**You are a developer on the DeveloperStore team. Now we need to implement the API prototypes.**
+- **Option 1 (Local Execution)**: [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **Option 2 & 3 (Docker Execution)**: [Docker](https://www.docker.com/get-started)
 
-As we work with `DDD`, to reference entities from other domains, we use the `External Identities` pattern with denormalization of entity descriptions.
+## Running the API
 
-Therefore, you will write an API (complete CRUD) that handles sales records. The API needs to be able to inform:
+### 1. Running Locally
 
-* Sale number
-* Date when the sale was made
-* Customer
-* Total sale amount
-* Branch where the sale was made
-* Products
-* Quantities
-* Unit prices
-* Discounts
-* Total amount for each item
-* Cancelled/Not Cancelled
+To run the API locally, follow these steps:
 
-It's not mandatory, but it would be a differential to build code for publishing events of:
-* SaleCreated
-* SaleModified
-* SaleCancelled
-* ItemCancelled
+1. Clone the repository:
+   ```sh
+   ~ git clone https://github.com/vsrwar/abi-gth-omnia-developer-evaluation.git
+   ```
+2. Configure the database connection strings in `appsettings.json`.
+3. Run the application using an IDE such as Visual Studio **or** using the .NET CLI:
+   ```sh
+   ~ cd abi-gth-omnia-developer-evaluation/template/backend/src/Ambev.DeveloperEvaluation.WebApi
+   ~ dotnet run
+   ```
 
-If you write the code, **it's not required** to actually publish to any Message Broker. You can log a message in the application log or however you find most convenient.
+### 2. Running with Docker Compose
 
-### Business Rules
+To run the API using Docker Compose:
 
-* Purchases above 4 identical items have a 10% discount
-* Purchases between 10 and 20 identical items have a 20% discount
-* It's not possible to sell above 20 identical items
-* Purchases below 4 items cannot have a discount
+1. Clone the repository:
+   ```sh
+   ~ git clone https://github.com/vsrwar/abi-gth-omnia-developer-evaluation.git
+   ```
+2. Copy the `.env.example` file and rename it to `.env`:
+3. Configure the `.env` file with your database connection details.
+4. Start the containers:
+   ```sh
+   ~ cd abi-gth-omnia-developer-evaluation/template/backend
+   ~ docker compose up -d
+   ```
 
-These business rules define quantity-based discounting tiers and limitations:
+### 3. Running Directly from Docker Hub
 
-1. Discount Tiers:
-   - 4+ items: 10% discount
-   - 10-20 items: 20% discount
+You can pull and run the pre-built Docker image directly from Docker Hub:
 
-2. Restrictions:
-   - Maximum limit: 20 items per product
-   - No discounts allowed for quantities below 4 items
+```sh
+   docker container run -it -p <host-port>:8080 \
+   -e ASPNETCORE_ENVIRONMENT=Development \
+   -e ASPNETCORE_HTTP_PORTS=8080 \
+   -e POSTGRES_CONNECTION_STRING=<postgres-connection> \
+   -e MONGO_CONNECTION_STRING=<mongodb-connection> \
+   --name ambev_developer_evaluation_webapi \
+   vsrwar/ambevdeveloperevaluationwebapi:1.0
+```
 
-## Overview
-This section provides a high-level overview of the project and the various skills and competencies it aims to assess for developer candidates. 
+Replace `<host-port>`, `<postgres-connection>`, and `<mongodb-connection>` with appropriate values.
 
-See [Overview](/.doc/overview.md)
+## API Endpoints
 
-## Tech Stack
-This section lists the key technologies used in the project, including the backend, testing, frontend, and database components. 
+For details on available API endpoints and how to interact with the service, after runing the application, checkout **localhost:8080/swagger** endpoint.
 
-See [Tech Stack](/.doc/tech-stack.md)
+## License
 
-## Frameworks
-This section outlines the frameworks and libraries that are leveraged in the project to enhance development productivity and maintainability. 
+This project is licensed under the [MIT License](LICENSE).
 
-See [Frameworks](/.doc/frameworks.md)
+## Contact
 
-<!-- 
-## API Structure
-This section includes links to the detailed documentation for the different API resources:
-- [API General](./docs/general-api.md)
-- [Products API](/.doc/products-api.md)
-- [Carts API](/.doc/carts-api.md)
-- [Users API](/.doc/users-api.md)
-- [Auth API](/.doc/auth-api.md)
--->
-
-## Project Structure
-This section describes the overall structure and organization of the project files and directories. 
-
-See [Project Structure](/.doc/project-structure.md)
+For any questions or support, reach out via email [rochavini@outlook.com](mailto\:rochavini@outlook.com)
