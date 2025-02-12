@@ -17,7 +17,7 @@ public class UpdateSaleResponse
     /// <summary>
     /// The sale's unique identifier.
     /// </summary>
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     
     /// <summary>
     /// The customer's unique identifier.

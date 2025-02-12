@@ -12,6 +12,6 @@ public class UpdateSaleResult
     /// <summary>
     /// Gets or sets the unique identifier of the newly updated sale.
     /// </summary>
-    /// <value>A GUID that uniquely identifies the updated sale in the system.</value>
-    public Guid Id { get; set; }
+    /// <value>A ObjectId that uniquely identifies the updated sale in the system.</value>
+    public string Id { get; set; }
 }
