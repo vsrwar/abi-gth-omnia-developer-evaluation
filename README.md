@@ -47,7 +47,7 @@ To run the API using Docker Compose:
 You can pull and run the pre-built Docker image directly from Docker Hub:
 
 ```sh
-   docker container run -it -p <host-port>:8080 \
+   docker container run -d -it -p <host-port>:8080 \
    -e ASPNETCORE_ENVIRONMENT=Development \
    -e ASPNETCORE_HTTP_PORTS=8080 \
    -e POSTGRES_CONNECTION_STRING=<postgres-connection> \
