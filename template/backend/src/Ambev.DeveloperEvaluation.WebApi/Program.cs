@@ -5,9 +5,11 @@ using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
+using Ambev.DeveloperEvaluation.ORM.Mongo;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
@@ -35,6 +37,13 @@ public class Program
                     b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
                 )
             );
+
+            builder.Services.AddDbContext<MongoContext>(options =>
+            {
+                var connString = Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("MongoConnection");
+                var client = new MongoClient(connString);
+                options.UseMongoDB(client, "DeveloperEvaluation");
+            });
 
             builder.Services.AddJwtAuthentication(builder.Configuration);
 

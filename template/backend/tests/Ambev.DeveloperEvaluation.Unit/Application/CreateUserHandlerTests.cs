@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Domain;
 using AutoMapper;
 using FluentAssertions;
+using FluentValidation;
 using NSubstitute;
 using Xunit;
 
@@ -86,7 +87,7 @@ public class CreateUserHandlerTests
         var act = () => _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<FluentValidation.ValidationException>();
+        await act.Should().ThrowAsync<ValidationException>();
     }
 
     /// <summary>

@@ -10,6 +10,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - POSTGRES_CONNECTION_STRING=Server=ambev.developerevaluation.database;Database=${DB_BASE};User Id=${DB_USER};Password=${DB_PASSWORD};TrustServerCertificate=True
+      - MONGO_CONNECTION_STRING=mongodb://${DB_USER}:${MONGODB_PASSWORD}@ambev.developerevaluation.nosql:27017/
     ports:
       - "8080:8080"
       - "8081:8181"
@@ -19,7 +20,7 @@ services:
     depends_on:
       - ambev.developerevaluation.database
       - ambev.developerevaluation.nosql
-      - ambev.developerevaluation.cache
+#      - ambev.developerevaluation.cache
     restart: unless-stopped
 
   ambev.developerevaluation.database:
@@ -38,18 +39,17 @@ services:
     image: mongo:8.0    
     environment:
         MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
-        MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
     ports:
       - "27017:27017"
     restart: unless-stopped
 
-  ambev.developerevaluation.cache:
-    container_name: ambev_developer_evaluation_cache 
-    image: redis:7.4.1-alpine     
-    command: redis-server --requirepass ${DB_PASSWORD}
-    environment:
-       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
-       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
-    ports:
-       - "6379:6379"
-    restart: unless-stopped
+#  ambev.developerevaluation.cache:
+#    container_name: ambev_developer_evaluation_cache 
+#    image: redis:7.4.1-alpine     
+#    command: redis-server --requirepass ${DB_PASSWORD}
+#    environment:
+#       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+#       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+#    ports:
+#       - "6379:6379"
