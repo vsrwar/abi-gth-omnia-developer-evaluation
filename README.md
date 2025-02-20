@@ -2,6 +2,8 @@
 
 This repository contains the source code for the Ambev Developer Evaluation Web API, built with C# and ASP.NET Core. The API can be run in three different ways: locally, using Docker Compose, or directly from a Docker container.
 
+![.NET Core CI](https://github.com/vsrwar/abi-gth-omnia-developer-evaluation/actions/workflows/tests.yml/badge.svg)
+
 ## Prerequisites
 
 Before running the application, ensure you have the following installed:
