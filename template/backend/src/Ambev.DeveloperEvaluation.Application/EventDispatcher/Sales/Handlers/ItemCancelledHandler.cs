@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Domain.Events.Sale;
+using Serilog;
 
 namespace Ambev.DeveloperEvaluation.Application.EventDispatcher.Sales.Handlers;
 
@@ -9,7 +10,7 @@ public class ItemCancelledHandler : IEventHandler<ItemCancelledEvent>
 {
     public Task Handle(ItemCancelledEvent saleEvent)
     {
-        Serilog.Log.Warning($"{saleEvent.OccurredOn} - Sale cancelled: {saleEvent.SaleId}");
+        Log.Warning($"{saleEvent.OccurredOn} - Sale cancelled: {saleEvent.SaleId}");
         return Task.CompletedTask;
     }
 }

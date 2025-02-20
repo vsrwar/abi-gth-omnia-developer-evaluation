@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Domain.Events.Sale;
+using Serilog;
 
 namespace Ambev.DeveloperEvaluation.Application.EventDispatcher.Sales.Handlers;
 
@@ -9,7 +10,7 @@ public class SaleModifiedHandler : IEventHandler<SaleModifiedEvent>
 {
     public Task Handle(SaleModifiedEvent saleEvent)
     {
-        Serilog.Log.Warning($"{saleEvent.OccurredOn} - Sale with ID: {saleEvent.SaleId} modified.");
+        Log.Warning($"{saleEvent.OccurredOn} - Sale with ID: {saleEvent.SaleId} modified.");
         return Task.CompletedTask;
     }
 }
