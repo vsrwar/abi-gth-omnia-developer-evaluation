@@ -7,7 +7,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Domain.Validation.Product;
 
 /// <summary>
 /// Contains unit tests for the ProductValidator class.
-/// Tests cover validation of all user properties including title, price,
+/// Tests cover validation of all product properties including title, price,
 /// description, and category requirements.
 /// </summary>
 [Trait("Category", "ProductValidator")]
