@@ -17,7 +17,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./template/backend/Ambev.DeveloperEvaluation.sln
 
       - name: Build
         run: dotnet build ./template/backend/Ambev.DeveloperEvaluation.sln --configuration Release --no-restore
