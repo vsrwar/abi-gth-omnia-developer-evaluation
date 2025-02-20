@@ -1,10 +1,10 @@
 using Ambev.DeveloperEvaluation.Domain.Enums;
-using Ambev.DeveloperEvaluation.Domain.Validation;
+using Ambev.DeveloperEvaluation.Domain.Validation.User;
 using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace Ambev.DeveloperEvaluation.Unit.Domain.Validation;
+namespace Ambev.DeveloperEvaluation.Unit.Domain.Validation.User;
 
 /// <summary>
 /// Contains unit tests for the UserValidator class.

@@ -8,7 +8,7 @@ public class ProductValidator : AbstractValidator<Entities.Product>
     public ProductValidator()
     {
         RuleFor(product => product.Title)
-            .NotEmpty()
+            .NotEmpty().WithMessage("The title cannot be empty.")
             .MinimumLength(3).WithMessage("Title must be at least 3 characters long.")
             .MaximumLength(100).WithMessage("Title cannot be longer than 100 characters.");
 
@@ -16,7 +16,7 @@ public class ProductValidator : AbstractValidator<Entities.Product>
             .GreaterThanOrEqualTo(0).WithMessage("Price cannot be negative");
         
         RuleFor(product => product.Description)
-            .NotEmpty()
+            .NotEmpty().WithMessage("The description cannot be empty.")
             .MinimumLength(3).WithMessage("Description must be at least 3 characters long.")
             .MaximumLength(500).WithMessage("Description cannot be longer than 500 characters.");
 
@@ -27,7 +27,7 @@ public class ProductValidator : AbstractValidator<Entities.Product>
             .WithMessage("The provided url address is not valid.")
             .MaximumLength(200).WithMessage("Image cannot be longer than 200 characters.");
 
-        RuleFor(user => user.Category)
+        RuleFor(product => product.Category)
             .NotEmpty().WithMessage("The category cannot be empty.");
     }
 

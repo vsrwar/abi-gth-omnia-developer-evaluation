@@ -1,5 +1,7 @@
+using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Services.Discount;
+using Ambev.DeveloperEvaluation.Domain.Validation;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -59,6 +61,25 @@ public class Sale
     /// Sale status on the system.
     /// </summary>
     public SaleStatus Status { get; private set; } = SaleStatus.Created;
+    
+    /// <summary>
+    /// Performs validation of the sale entity using the SaleValidator rules.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="ValidationResultDetail"/> containing:
+    /// - IsValid: Indicates whether all validation rules passed
+    /// - Errors: Collection of validation errors if any rules failed
+    /// </returns>
+    public ValidationResultDetail Validate()
+    {
+        var validator = new SaleValidator();
+        var result = validator.Validate(this);
+        return new ValidationResultDetail
+        {
+            IsValid = result.IsValid,
+            Errors = result.Errors.Select(vf => (ValidationErrorDetail)vf)
+        };
+    }
     
     public Sale CalculateDiscount()
     {

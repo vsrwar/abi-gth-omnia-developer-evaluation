@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Domain.Events.Sale;
+using Serilog;
 
 namespace Ambev.DeveloperEvaluation.Application.EventDispatcher.Sales.Handlers;
 
@@ -9,7 +10,7 @@ public class SaleCreatedHandler : IEventHandler<SaleCreatedEvent>
 {
     public Task Handle(SaleCreatedEvent saleEvent)
     {
-       Serilog.Log.Warning($"{saleEvent.OccurredOn} - New sale with ID: {saleEvent.SaleId} and total: {saleEvent.Total}");
+       Log.Warning($"{saleEvent.OccurredOn} - New sale with ID: {saleEvent.SaleId} and total: {saleEvent.Total}");
         return Task.CompletedTask;
     }
 }

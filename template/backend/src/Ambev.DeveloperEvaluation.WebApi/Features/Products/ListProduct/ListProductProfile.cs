@@ -1,5 +1,4 @@
 using Ambev.DeveloperEvaluation.Application.Products.ListProduct;
-using Ambev.DeveloperEvaluation.WebApi.Common;
 using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.ListProduct;
