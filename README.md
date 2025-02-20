@@ -53,7 +53,7 @@ You can pull and run the pre-built Docker image directly from Docker Hub:
    -e POSTGRES_CONNECTION_STRING=<postgres-connection> \
    -e MONGO_CONNECTION_STRING=<mongodb-connection> \
    --name ambev_developer_evaluation_webapi \
-   vsrwar/ambevdeveloperevaluationwebapi:1.0
+   vsrwar/ambevdeveloperevaluationwebapi:1.1
 ```
 
 Replace `<host-port>`, `<postgres-connection>`, and `<mongodb-connection>` with appropriate values.
